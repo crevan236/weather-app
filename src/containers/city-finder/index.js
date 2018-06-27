@@ -15,7 +15,7 @@ const Option = AutoComplete.Option
 class CityFinder extends Component {
   render() {
     const options = this.props.citiesAvalible.map((item) => {
-      return <Option key={item.Key}>{item.LocalizedName}</Option>
+      return <Option key={item.Key}>{`${item.LocalizedName}, ${item.Country.LocalizedName}`}</Option>
     });
     return (
       <Row type="flex">
@@ -26,7 +26,8 @@ class CityFinder extends Component {
               size="large"
               style={{ width: "100%" }}
               placeholder="Podaj miasto"
-              onSearch={this.props.fetchCities}
+              onSearch={this.onSearch}
+              onSelect={this.onSelect}
             >
               <Input
                 suffix={
@@ -53,7 +54,11 @@ class CityFinder extends Component {
     );
   }
   componentDidMount() {
-    this.props.setAvalibleCitiesByMock();
+    // this.props.setAvalibleCitiesByMock();
+  }
+  onSearch = debounce(500, this.props.fetchCities);
+  onSelect (val) {
+    console.warn(val);
   }
 }
 
