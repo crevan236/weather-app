@@ -7,7 +7,7 @@ import {
   Col,
   Card, Button, Icon, AutoComplete, Input
 } from "antd";
-import { setAvalibleCitiesByMock, setCurrentPositionByGeolocation, fetchCities } from '../../modules/locationFinder'
+import { setSelectedCity, setAvalibleCitiesByMock, setCurrentPositionByGeolocation, fetchCities } from '../../modules/locationFinder'
 import { debounce } from 'throttle-debounce'
 
 const Option = AutoComplete.Option
@@ -27,7 +27,7 @@ class CityFinder extends Component {
               style={{ width: "100%" }}
               placeholder="Podaj miasto"
               onSearch={this.onSearch}
-              onSelect={this.onSelect}
+              onSelect={this.props.setSelectedCity}
             >
               <Input
                 suffix={
@@ -57,9 +57,9 @@ class CityFinder extends Component {
     // this.props.setAvalibleCitiesByMock();
   }
   onSearch = debounce(500, this.props.fetchCities);
-  onSelect (val) {
-    console.warn(val);
-  }
+  // onSelect (val) {
+  //   console.warn(val);
+  // }
 }
 
 const mapStateToProps = state => ({
@@ -70,7 +70,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
   setAvalibleCitiesByMock,
   setCurrentPositionByGeolocation,
-  fetchCities
+  fetchCities,
+  setSelectedCity
 }, dispatch)
 
 export default connect(

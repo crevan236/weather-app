@@ -1,9 +1,12 @@
 import 'whatwg-fetch'
 import { LOCATION_ENDPOINT, API_KEY } from './http-data'
 
+import { fetchWeatherByKey } from './currentWeather'
+
 export const SET_POSITION = '[GEOLOCATION] SET POSITION';
 export const SET_CITY = '[CITY FINDER] SET CITY';
 export const FETCH_CITIES = '[CITY FINDER] FETCH CITIES';
+export const SET_CITY_BY_KEY = '[CITY FINDER] SET BY KEY';
 
 const initialState = {
   currentPosition: {
@@ -34,6 +37,12 @@ export default (state = initialState, action) => {
         ...state,
         citiesAvalible: action.payload
       }
+    case SET_CITY_BY_KEY:
+      const city = state.citiesAvalible.find((val) => val.Key === action.payload);
+      return {
+        ...state,
+        currentCity: city !== -1 ? city : null
+      }
     default:
       return state;
   }
@@ -46,7 +55,19 @@ export const setCurrentPositionByGeolocation = () => {
         dispatch({
           type: SET_POSITION,
           payload: position
-        })
+        });
+        fetch(LOCATION_ENDPOINT + `/geoposition/search?apikey=${API_KEY}&q=${position.coords.latitude}%2C${position.coords.longitude}&language=pl`)
+          .then(response => response.json())
+          .then((data) => {
+            setSelectedCity(data);
+            // dispatch({
+            //   type: SET_CITY,
+            //   payload: data
+            // });
+          })
+          .catch((e) => {
+            console.warn(e);
+          });
       });
     }
   } else {
@@ -90,4 +111,24 @@ export const setAvalibleCitiesByMock = () => {
       {LocalizedName: 'Warszawa', Key: '2'}
     ]
   })
+}
+
+// value is key or city object
+export const setSelectedCity = (value) => {
+  console.warn(value);
+  return dispatch => {
+    if (value.length) {
+      dispatch({
+        type: SET_CITY_BY_KEY,
+        payload: value
+      });
+      fetchWeatherByKey(value);
+    } else {
+      dispatch({
+        type: SET_CITY,
+        payload: value
+      });
+      fetchWeatherByKey(value.Key);
+    }
+  }
 }
