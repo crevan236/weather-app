@@ -8,7 +8,8 @@ export const FETCH_WEATHER_FAILURE = '[CURRENT WEATHER] FAILURE';
 const initialState = {
   weather: {},
   pending: false,
-  errorMsg: null
+  errorMsg: null,
+  fetched: false
 }
 
 export default (state = initialState, action) => {
@@ -17,6 +18,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         pending: false,
+        fetched: false,
         errorMsg: 'Nie udało się pobrać pogody :-('
       }
     case FETCH_WEATHER_SUCCESS:
@@ -24,6 +26,7 @@ export default (state = initialState, action) => {
         ...state,
         pending: false,
         errorMsg: null,
+        fetched: true,
         weather: action.payload
       }
     case FETCH_WEATHER:
@@ -43,7 +46,7 @@ export const fetchWeatherByKey = (key) => {
       .then((data) => {
         dispatch({
           type: FETCH_WEATHER_SUCCESS,
-          payload: data
+          payload: data[0]
         });
       }).catch((e) => {
         console.warn(e);
@@ -51,5 +54,13 @@ export const fetchWeatherByKey = (key) => {
           type: FETCH_WEATHER_FAILURE
         });
       });
+  }
+}
+
+export const mapModelToColors = (isDay, temperature) => {
+  if (temperature > 10) {
+    return isDay ? 'is-sunny' : 'is-warm-night';
+  } else {
+    return isDay ? 'is-coldy' : 'is-cold-night';
   }
 }

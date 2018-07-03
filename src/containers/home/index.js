@@ -1,12 +1,16 @@
 import React from 'react'
 
 import CityFinder from '../city-finder';
+import CurrentWeather from '../current-weather';
+import WeatherDetails from '../weather-details';
+import WeatherCharts from '../weather-charts';
 
 const Home = props => (
   <div>
     <CityFinder></CityFinder>
-    <h1>Home</h1>
-    <p>Welcome home!</p>
+    <CurrentWeather></CurrentWeather>
+    <WeatherDetails></WeatherDetails>
+    <WeatherCharts></WeatherCharts>
   </div>
 )
 export default Home

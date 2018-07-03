@@ -14,7 +14,7 @@ class App extends Component {
   render() {
     return (
       <Layout className="layout">
-        <Header>
+        {/* <Header>
           <div className="logo" />
           <Menu
             theme="dark"
@@ -25,14 +25,14 @@ class App extends Component {
             <Menu.Item onClick={() => this.props.toHome()} key="1">Strona główna</Menu.Item>
             <Menu.Item onClick={() => this.props.toRoadWeather()} key="2">Pogoda na drodze</Menu.Item>
           </Menu>
-        </Header>
+        </Header> */}
         <Content style={{ padding: "0 50px" }}>
-          <div style={{ background: "transparent", padding: 0, minHeight: 'calc(100vh - 150px)' }}>
+          <div style={{ background: "transparent", padding: 0, minHeight: 'calc(100vh - 60px)' }}>
             <Route exact path="/" component={Home} />
             <Route exact path="/road-weather" component={RoadWeather} />
           </div>
         </Content>
-        <Footer style={{ textAlign: "center" }}>Weather App</Footer>
+        <Footer style={{ textAlign: "center" }}>Weather App | Powered by AccuWeather</Footer>
       </Layout>
     );
   }

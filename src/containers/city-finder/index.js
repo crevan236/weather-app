@@ -53,13 +53,7 @@ class CityFinder extends Component {
       </Row>
     );
   }
-  componentDidMount() {
-    // this.props.setAvalibleCitiesByMock();
-  }
   onSearch = debounce(500, this.props.fetchCities);
-  // onSelect (val) {
-  //   console.warn(val);
-  // }
 }
 
 const mapStateToProps = state => ({
